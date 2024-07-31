@@ -1,0 +1,1 @@
+npm i onnxruntime-node@1.16.1

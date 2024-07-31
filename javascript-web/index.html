@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+    <title>ONNX Inference Web</title>
+</head>
+<body>
+    <h1>ONNX Inference Web Example</h1>
+    <pre id="output">Loading model and making prediction...</pre>
+    <script type="module">
+         async function runInference() {
+            const modelPath = './random_forest_iris.onnx';
+            
+            console.log(ort.InferenceSession)
+            // Carregar o modelo ONNX
+            const session = await ort.InferenceSession.create(modelPath);
+
+            // Criar dados de entrada
+            const inputData = Float32Array.from([40.1, 30.5, 10.4, 30.2]);
+            const tensor = new ort.Tensor('float32', inputData, [1, inputData.length]);
+
+            // Fazer a previsão
+            const feeds = { float_input: tensor };
+            const results = await session.run(feeds);
+            document.getElementById('output').textContent = `Previsão: ${results["label"].data}`;
+           
+        }
+
+        runInference();
+    </script>
+</body>
+</html>
